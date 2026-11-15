@@ -7,10 +7,11 @@ A personal Chinese lecture-notes reading site generated with [lecture-to-notes](
 
 [**Read online →**](https://wngzwng.github.io/lecture-notes/) · [中文](README.md)
 
-This catalog contains personal notes and GAMES001 Mathematics in Computer Graphics (currently 2 courses and collections, 18 lectures, and 561 lecture pages).
+This catalog contains personal notes, GAMES001 Mathematics in Computer Graphics, and MIT Missing Semester 2026 (currently 3 courses and collections, 27 lectures, and 816 lecture pages).
 
 - Course: 个人笔记
 - Course: GAMES001 图形学中的数学 (16 lectures, [Bilibili BV1MF4m1V7e3](https://www.bilibili.com/video/BV1MF4m1V7e3/))
+- Course: MIT Missing Semester 2026 (9 lectures, [YouTube playlist](https://www.youtube.com/playlist?list=PLyzOVJj3bHQunmnnTXrNbZnBaCA-ieK4L))
 - Lecture: [The Rubik's cube is secretly linear algebra](https://wngzwng.github.io/lecture-notes/reader.html?id=my-notes-the-rubik-s-cube-is-secretly-linear-algebra-167bbe2c) ([YouTube source](https://www.youtube.com/watch?v=kRrK4VJBf2s))
 
 ## Local preview

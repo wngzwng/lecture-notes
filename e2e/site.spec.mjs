@@ -21,13 +21,14 @@ test.beforeAll(async () => {
   await mkdir(REVIEW_DIR, {recursive: true});
 });
 
-test('catalog contains the personal notes and GAMES001 courses', async ({request}) => {
+test('catalog contains the personal notes, GAMES001 and Missing Semester 2026 courses', async ({request}) => {
   const data = await catalog(request);
-  expect(data.courses).toHaveLength(2);
-  expect(data.courses.map(course => course.id).sort()).toEqual(['games001', 'my-notes']);
-  expect(data.items).toHaveLength(18);
+  expect(data.courses).toHaveLength(3);
+  expect(data.courses.map(course => course.id).sort()).toEqual(['games001', 'missing-semester-2026', 'my-notes']);
+  expect(data.items).toHaveLength(27);
   expect(data.items.filter(item => item.course_id === 'my-notes')).toHaveLength(2);
   expect(data.items.filter(item => item.course_id === 'games001')).toHaveLength(16);
+  expect(data.items.filter(item => item.course_id === 'missing-semester-2026')).toHaveLength(9);
   expect(data.items.some(item => /Rubik/i.test(item.title))).toBeTruthy();
   expect(data.papers).toHaveLength(0);
 });

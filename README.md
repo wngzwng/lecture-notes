@@ -7,10 +7,11 @@
 
 [**在线阅读 →**](https://wngzwng.github.io/lecture-notes/) · [English](README.en.md)
 
-当前目录收录个人笔记与 GAMES001 图形学中的数学（当前共 2 门课程与专题、18 讲、561 页正课讲义）。
+当前目录收录个人笔记、GAMES001 图形学中的数学与 MIT Missing Semester 2026（当前共 3 门课程与专题、27 讲、816 页正课讲义）。
 
 - 课程：个人笔记
 - 课程：GAMES001 图形学中的数学（16 讲，[哔哩哔哩 BV1MF4m1V7e3](https://www.bilibili.com/video/BV1MF4m1V7e3/)）
+- 课程：MIT Missing Semester 2026（9 讲，[YouTube 播放列表](https://www.youtube.com/playlist?list=PLyzOVJj3bHQunmnnTXrNbZnBaCA-ieK4L)）
 - 讲义：[The Rubik's cube is secretly linear algebra](https://wngzwng.github.io/lecture-notes/reader.html?id=my-notes-the-rubik-s-cube-is-secretly-linear-algebra-167bbe2c)（[YouTube 来源](https://www.youtube.com/watch?v=kRrK4VJBf2s)）
 
 ## 本地预览
