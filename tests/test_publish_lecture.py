@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 class PublishLectureTests(unittest.TestCase):
     def test_live_readme_stats_match_course_manifests(self):
         stats = sync_readme_stats(ROOT, check_only=True)
-        self.assertEqual(stats["course_count"], 1)
-        self.assertEqual(stats["lecture_count"], 2)
-        self.assertEqual(stats["page_count"], 41)
+        self.assertEqual(stats["course_count"], 2)
+        self.assertEqual(stats["lecture_count"], 18)
+        self.assertEqual(stats["page_count"], 561)
 
     def test_sync_readme_updates_stale_counts_and_publish_archives_files(self):
         with tempfile.TemporaryDirectory() as tmp:
