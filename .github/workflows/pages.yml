@@ -28,7 +28,7 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b
 
       - name: Install site build dependencies
-        run: sudo apt-get update && sudo apt-get install --yes pandoc qpdf python3-bs4 python3-pil imagemagick
+        run: sudo apt-get update && sudo apt-get install --yes pandoc poppler-utils qpdf python3-bs4 python3-pil imagemagick
 
       - name: Install front-end dependencies
         run: npm ci
