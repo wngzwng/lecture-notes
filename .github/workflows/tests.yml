@@ -1,0 +1,40 @@
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.event_name }}-${{ github.head_ref || github.ref }}-${{ github.event_name == 'pull_request' && 'pr' || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  site:
+    name: site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+        with:
+          persist-credentials: false
+
+      - name: Install site test dependencies
+        run: sudo apt-get update && sudo apt-get install --yes pandoc qpdf python3-bs4 python3-pil
+
+      - name: Run site Python tests
+        run: |
+          PYTHONPATH=. python3 -m unittest \
+            tests.test_build_site \
+            tests.test_pdf_inspector \
+            tests.test_publish_lecture \
+            tests.test_site_catalog \
+            tests.test_site_contract \
+            tests.test_web_notes \
+            tests.test_workflow_security \
+            -v

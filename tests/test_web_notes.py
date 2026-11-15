@@ -1,0 +1,155 @@
+import hashlib
+import json
+import shutil
+import tempfile
+import unittest
+from pathlib import Path
+
+from scripts.web_notes import ConversionError, build_web_notes, convert, digest, image_size, prepare_tex, safe_file, video_time_url
+
+import importlib.util
+
+READY = (
+    all(shutil.which(x) for x in ('pandoc', 'identify'))
+    and importlib.util.find_spec('PIL') is not None
+    and importlib.util.find_spec('bs4') is not None
+)
+
+class WebNotesTests(unittest.TestCase):
+    def test_video_links_preserve_video_and_replace_stale_start_times(self):
+        cases = {
+            'https://www.youtube.com/watch?v=UwfjzyLnvMg&t=9&start=2#t=5':
+                'https://www.youtube.com/watch?v=UwfjzyLnvMg&t=3723',
+            'https://youtu.be/UwfjzyLnvMg?si=share':
+                'https://youtu.be/UwfjzyLnvMg?si=share&t=3723',
+            'https://www.bilibili.com/video/BVtest/?p=2&t=9':
+                'https://www.bilibili.com/video/BVtest/?p=2&t=3723',
+        }
+        for source, expected in cases.items():
+            with self.subTest(source=source):
+                self.assertEqual(video_time_url(source, '01:02:03'), expected)
+        for source in ('https://www.youtube.com.evil.test/watch?v=a',
+                       'https://www.youtube.com@evil.test/watch?v=a',
+                       'javascript:alert(1)', 'https://example.com/video'):
+            self.assertIsNone(video_time_url(source, '01:02:03'))
+
+    def test_blocks_source_file_access_and_unpaired_notes(self):
+        for body in (r'\input{/etc/passwd}', r'\include{../secret}',r'\write18{touch file}',r'\srcnote{00:00:00--00:00:15}'):
+            with self.assertRaises(ConversionError): prepare_tex(r'\begin{document}'+body+r'\end{document}')
+
+    def test_srcnote_preserves_the_defined_note_text(self):
+        source = r"\newcommand{\srcnote}[1]{\footnotetext{视频时间：#1。完整画面。}}\begin{document}图注\vtag\srcnote{00:00:00--00:00:15}\end{document}"
+        _, _, notes, _ = prepare_tex(source)
+        self.assertEqual(list(notes.values()), ["视频时间：00:00:00--00:00:15。完整画面。"])
+
+    def test_unknown_formatting_inside_source_notes_is_not_silently_rendered(self):
+        source = r"\begin{document}图注\protect\footnotemark\footnotetext{00:00:00--00:00:15 \UnknownMacro{内容}}\end{document}"
+        with self.assertRaisesRegex(ConversionError, "plain text"):
+            prepare_tex(source)
+
+    def test_blocks_path_escape_and_symlinks(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);(root/'ok.tex').write_text('ok');(root/'link.tex').symlink_to(root/'ok.tex')
+            for name in ('../ok.tex','/etc/passwd','link.tex'):
+                with self.assertRaises(ConversionError):safe_file(root,name)
+
+    @unittest.skipUnless(READY,'Pandoc and ImageMagick required')
+    def test_preserves_source_notes_boxes_math_and_rejects_unknown_macros(self):
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);Image.new('RGB',(10,10),'white').save(root/'figure.png')
+            text=r'''\documentclass{article}
+\begin{document}
+\section{测试章节}
+\begin{knowledgebox}{概念标题}正文含有 $x^2$。\end{knowledgebox}
+\begin{figure}\includegraphics{figure.png}\caption{图注\protect\footnotemark}\end{figure}
+\footnotetext{视频画面时间区间：00:00:00--00:00:15。}
+\end{document}'''
+            source=root/'notes.tex';source.write_text(text)
+            spec={'expected':{'chapters':1,'figures':1,'images':1,'callouts':1,'tables':0,'math':1,'time_tokens':2},'resources':{'figure.png':digest(root/'figure.png')}}
+            item={'id':'test','title':'测试','sha256':'pdf','source_url':'https://www.bilibili.com/video/BVtest/'}
+            result=convert(source,root,root/'out',spec,item)
+            html=(root/'out/article.html').read_text()
+            self.assertEqual(result['status'],'passed');self.assertIn('00:00:15',html);self.assertIn('note-callout',html);self.assertIn('概念标题',html);self.assertIn('<math',html)
+            self.assertEqual(result['counts']['figures'],1)
+            item['source_url']='https://www.youtube.com/watch?v=UwfjzyLnvMg'
+            convert(source,root,root/'youtube',spec,item)
+            from bs4 import BeautifulSoup
+            document=BeautifulSoup((root/'youtube/article.html').read_text(),'html.parser')
+            self.assertEqual(document.select_one('figure .video-link')['href'],
+                             'https://www.youtube.com/watch?v=UwfjzyLnvMg&t=0')
+            source.write_text(text.replace('正文含有',r'\UnknownSemanticMacro{不应丢失}正文含有'))
+            with self.assertRaises(ConversionError):convert(source,root,root/'bad',spec,item)
+            source.write_text(text);Image.new('RGB',(10,10),'black').save(root/'figure.png')
+            with self.assertRaisesRegex(ConversionError,'image hashes'):convert(source,root,root/'changed',spec,item)
+
+    @unittest.skipUnless(READY,'Pandoc and ImageMagick required')
+    def test_figure_with_slide_and_board_images_converts(self):
+        from PIL import Image
+        from bs4 import BeautifulSoup
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d)
+            for name,color in (('slide.png','white'),('board.png','black')):Image.new('RGB',(16,9),color).save(root/name)
+            text=r'''\documentclass{article}
+\begin{document}
+\section{测试章节}
+\begin{figure}\centering
+\includegraphics[width=\textwidth]{slide.png}\\[4pt]
+\includegraphics[width=0.5\textwidth]{board.png}
+\caption{课件与同一时刻的板书\protect\footnotemark}\end{figure}
+\footnotetext{视频画面时间区间：00:00:00--00:00:15。}
+\end{document}'''
+            source=root/'notes.tex';source.write_text(text)
+            spec={'expected':{'chapters':1,'figures':1,'images':2,'callouts':0,'tables':0,'math':0,'time_tokens':2},
+                  'resources':{'slide.png':digest(root/'slide.png'),'board.png':digest(root/'board.png')}}
+            item={'id':'test','title':'测试','sha256':'pdf','source_url':'https://www.bilibili.com/video/BVtest/'}
+            result=convert(source,root,root/'out',spec,item)
+            self.assertEqual(result['status'],'passed');self.assertEqual(result['counts']['images'],2)
+            document=BeautifulSoup((root/'out/article.html').read_text(),'html.parser')
+            caption=document.select_one('figure figcaption').get_text()
+            self.assertEqual([image['alt'] for image in document.select('figure img')],[caption,caption])
+
+    def test_image_size_reads_png_jpeg_and_webp_headers(self):
+        if importlib.util.find_spec('PIL') is None:
+            self.skipTest('Pillow required')
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            img = Image.new('RGB', (345, 210), (20, 40, 60))
+            for name, kwargs in (('a.png', {}), ('b.jpg', {'quality': 85}), ('c.webp', {'quality': 80}), ('d.webp', {'lossless': True})):
+                path = root / name
+                img.save(path, **kwargs)
+                self.assertEqual(image_size(path), (345, 210), name)
+
+    @unittest.skipUnless(READY, 'Pandoc required')
+    def test_equation_labels_and_eqref_convert_cleanly(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            text = r'''\documentclass{article}
+\begin{document}
+\section{公式引用}
+\begin{equation}\label{eq:loss}
+L = x^2 + y^2
+\end{equation}
+如式 \eqref{eq:loss} 所示。
+\end{document}'''
+            source = root / 'notes.tex'
+            source.write_text(text)
+            spec = {'expected': {'chapters': 1, 'figures': 0, 'images': 0, 'callouts': 0, 'tables': 0, 'math': 1, 'time_tokens': 0}, 'resources': {}}
+            item = {'id': 'eq', 'title': '测试', 'sha256': 'pdf', 'source_url': ''}
+            result = convert(source, root, root / 'out', spec, item)
+            html = (root / 'out/article.html').read_text()
+            self.assertEqual(result['status'], 'passed')
+            self.assertIn('如式 (1) 所示', html)
+
+    def test_failed_conversion_does_not_publish_html_or_reuse_old_output(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);course=root/'content/courses/a';course.mkdir(parents=True);(course/'notes.tex').write_text('changed')
+            (course/'course.json').write_text(json.dumps({'items':[{'file':'a.pdf','web_source':{'tex':'notes.tex','sha256':'wrong','pdf_sha256':'pdf'}}]}))
+            output=root/'out';(output/'notes/id').mkdir(parents=True);(output/'notes/id/article.html').write_text('old unchecked HTML')
+            item={'id':'id','pdf':'pdfs/a.pdf','sha256':'pdf','web':{'article':'old'}}
+            result=build_web_notes(root,output,{'items':[item]})
+            self.assertEqual(result['id']['status'],'blocked');self.assertNotIn('web',item)
+            self.assertFalse((output/'notes/id').exists());self.assertEqual(item['pdf'],'pdfs/a.pdf')
+
+if __name__=='__main__':unittest.main()

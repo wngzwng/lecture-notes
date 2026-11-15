@@ -1,0 +1,110 @@
+import re
+import unittest
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+class SiteContractTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.index = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+        cls.reader = (ROOT / "docs/reader.html").read_text(encoding="utf-8")
+        cls.components = (ROOT / "docs/assets/components.js").read_text(encoding="utf-8")
+        cls.reader_js = (ROOT / "docs/assets/reader.js").read_text(encoding="utf-8")
+        cls.styles = (ROOT / "docs/assets/styles.css").read_text(encoding="utf-8")
+
+    def test_homepage_is_semantic_and_catalog_driven(self):
+        for fragment in (
+            'class="skip-link"',
+            '<nav class="nav-shell"',
+            'label for="course-search"',
+            'id="course-filters"',
+            'id="search-lectures"',
+            'id="course-grid"',
+            'id="course-detail"',
+            'id="empty-state"',
+            'type="module" src="assets/home.js"',
+        ):
+            self.assertIn(fragment, self.index)
+        self.assertNotIn("const DATA", self.index)
+        self.assertNotIn("onclick=", self.index)
+
+    def test_components_do_not_inject_catalog_html(self):
+        self.assertIn("textContent", self.components)
+        self.assertIn("document.createElement", self.components)
+        self.assertNotIn("innerHTML", self.components)
+
+    def test_reader_uses_catalog_ids_and_has_recovery_actions(self):
+        for fragment in (
+            'id="course-nav"',
+            'id="mobile-item-select"',
+            'id="reader-title"',
+            'id="reader-meta"',
+            'id="pdf-container"',
+            'id="pdf-viewer"',
+            'id="pdf-zoom"',
+            'id="html-container"',
+            'id="open-pdf"',
+            'id="download-pdf"',
+            'id="source-link"',
+            'id="reader-error"',
+            'type="module" src="assets/reader.js?v=2"',
+        ):
+            self.assertIn(fragment, self.reader)
+        self.assertIn(".get('id')", self.reader_js)
+        self.assertNotIn(".get('pdf')", self.reader_js)
+
+    def test_nav_points_at_personal_repo_and_credits_upstream(self):
+        for fragment in (
+            "https://github.com/wngzwng/lecture-notes",
+            "https://github.com/ysyecust/lecture-to-notes",
+            "GPL-3.0",
+        ):
+            self.assertIn(fragment, self.index)
+        self.assertNotIn("https://github.com/ysyecust/lecture-to-notes/fork", self.index)
+        self.assertNotIn("blog.simona.plus", self.index)
+        self.assertNotIn("contribute.html", self.index)
+
+    def test_public_copy_is_direct_and_avoids_slogan_language(self):
+        for fragment in (
+            "按课程查找、在线阅读或下载 PDF",
+            "按讲次进入讲义，在线阅读或下载 PDF",
+        ):
+            self.assertIn(fragment, self.index)
+        for fragment in (
+            "可探索的学习桌",
+            "沿着讲次继续读",
+            "书脊旁的每一格刻度",
+            "自动检查先替我们看一遍",
+            "THREE CHECKPOINTS",
+            "UPLOAD ENVELOPE",
+        ):
+            self.assertNotIn(fragment, self.index)
+
+    def test_pages_have_restrictive_csp_and_external_styles(self):
+        for source in (self.index, self.reader):
+            self.assertIn("Content-Security-Policy", source)
+            self.assertIn("object-src 'none'", source)
+            self.assertIn('href="assets/styles.css"', source)
+            self.assertNotIn("<style", source)
+
+    def test_visual_tokens_and_responsive_accessibility_are_present(self):
+        for fragment in (
+            "--lab-paper: #f7fafb",
+            "--blueprint: #173a50",
+            "--ink-blue: #2f6bff",
+            "--annotation: #ff6b5b",
+            "--grid-line: #ccd8e0",
+            ".course-spine",
+            ".lecture-ticks",
+            "prefers-reduced-motion",
+            "max-width: 820px",
+            "max-width: 560px",
+        ):
+            self.assertIn(fragment, self.styles)
+
+
+if __name__ == "__main__":
+    unittest.main()

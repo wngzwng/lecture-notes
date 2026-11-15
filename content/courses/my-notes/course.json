@@ -1,0 +1,119 @@
+{
+  "id": "my-notes",
+  "title": "个人笔记",
+  "institution": "个人",
+  "term": "2026",
+  "description": "用 lecture-to-notes 生成的个人课程笔记。",
+  "tags": [
+    "个人笔记",
+    "YouTube"
+  ],
+  "featured": true,
+  "items": [
+    {
+      "file": "rubiks_cube_linear_algebra_zh.pdf",
+      "title": "The Rubik's cube is secretly linear algebra",
+      "order": 1,
+      "expected_pages": 20,
+      "duration_minutes": 16,
+      "instructor": "Steffen",
+      "source_url": "https://www.youtube.com/watch?v=kRrK4VJBf2s",
+      "source_label": "YouTube",
+      "meta": "Steffen · 16min · 20页",
+      "web_source": {
+        "tex": "source/rubiks_cube_linear_algebra/notes.tex",
+        "sha256": "c98e315fe941331ea59ec0bdb1099997772c26505f48d4d40ef59821678d4da7",
+        "pdf_sha256": "167bbe2c045ef7eb95625d67ce1a43adbd5fddfdced541d1feb6729b6fef1ae6",
+        "expected": {
+          "chapters": 9,
+          "figures": 23,
+          "images": 23,
+          "callouts": 7,
+          "tables": 1,
+          "math": 254,
+          "time_tokens": 46
+        },
+        "resources": {
+          "figures/fig_01_permutation_tables.jpg": "b4c1f18e83627c7b8ae09656543af06b873da39375a046ce95b6ca27a18ce701",
+          "figures/fig_02_eigencube_title.jpg": "3c24e5a0348546b8605eaf9ccefa70a18952c7ef22462d8ec1f3bec0dce29e0d",
+          "figures/fig_03_vector_basis.jpg": "1fc854ae7ceb02ad55e4b92dfd6b6bfad815ad99ae9e769bff32719ab2a49ff3",
+          "figures/fig_04_rotation_matrix.jpg": "8d8ffe7213c9cc65a23a28b1571b35427593e69ffab9cf36d83ad874e5d447a4",
+          "figures/fig_05_eigenvector.jpg": "6215397c1c07ea6defc8663640a2624e2d41f8e712af1ecba005fcc803739353",
+          "figures/fig_06_axes.jpg": "aacdbb7033b90f2b05f38ffe158ad77e372914c8bcb86f13802cc0e1f0484129",
+          "figures/fig_07_cubelet_address.jpg": "b08eb2951ee634b85ae7889487d2b49b4b72f5e4efdd808a1c4516667fccdfc5",
+          "figures/fig_08_middle_slice.jpg": "a9744e3d6f495237c991a377fd552172db8ae97aaa230772a169a82a6bd797ff",
+          "figures/fig_09_manhattan_norm.jpg": "d5ba73e30f16d301a50a43061bc136c9c0692a2c71cc562c6019cf32c149db47",
+          "figures/fig_10_colors_basis.jpg": "bcc4bfb9a727ffaf724c53b38e5cb341c8eeadbfdede59b9ac401696508aaabe",
+          "figures/fig_11_opposite_colors.jpg": "48adf495f9334b2c2c1bac7bbb2e903aecbbbceaaed35b25204416b46636cb87",
+          "figures/fig_12_diag_c_corner.jpg": "948139ffbb21a962a99dbcbc091a565aa8e76deb65527cee106fdf2a62c2fa08",
+          "figures/fig_13_diag_c_edge.jpg": "df448ad59d01c41ecec355e518d151a35836b19e0454d776c8816c949c7e7465",
+          "figures/fig_14_diag_c_meaning.jpg": "59c75df6daef8f83dc4594db52ab53a5fc0aa6c1af0017a117f7cae61967f8fa",
+          "figures/fig_15_position_Rc.jpg": "a2452ecec3d4f62711f9cbb2dd80e094ab3cbf4aee121f43e7c4f2745dbdec1b",
+          "figures/fig_16_sticker_Rdiag.jpg": "8f0d9751251023ce38cf3edd9cddbc48154c228e95d83caf421dc13f7ce5d88e",
+          "figures/fig_17_twisted_corner.jpg": "a0db064d2ec379a37cdee231676bf6fc0cf54cae8f114c139f66c1641b4f9e25",
+          "figures/fig_18_layer_select.jpg": "4939f456591106dc197f677f81aa320b08a33ff055c4bab4f9f49230b85143f7",
+          "figures/fig_19_move_matrix_M.jpg": "514f57785d27902fdad6cb6a25652342ddf500b5de7b77249fe4c17c4df36ac0",
+          "figures/fig_20_move_code.jpg": "0c6463197bb7bdf68f009a8a3060a63827e914d897f0d31ee8c41a129364cda8",
+          "figures/fig_21_solved_test.jpg": "74758fd54adb75a4098da16f92f77a1c955dfa892640b0b13edaa697c857cef2",
+          "figures/fig_22_center_spin.jpg": "ca9035c28c428d1d257c95c288a32d016f333705e666641379275495cd28793a",
+          "figures/fig_23_model_summary.jpg": "3ed54c04f04d1d66746664a0a82f65633fde714cd144e83f36fa10005402e9e9"
+        }
+      }
+    },
+    {
+      "file": "klotski_zh.pdf",
+      "title": "I Solved Klotski",
+      "order": 2,
+      "expected_pages": 21,
+      "duration_minutes": 12,
+      "instructor": "2swap",
+      "source_url": "https://www.youtube.com/watch?v=YGLNyHd2w10",
+      "source_label": "YouTube",
+      "meta": "2swap · 12min · 21页",
+      "web_source": {
+        "tex": "source/klotski/notes.tex",
+        "sha256": "c12a98f883fc7e9810799b7829b3062b079b62f7a2bbe0fa7417585307d10bb8",
+        "pdf_sha256": "611287fa55fb43ede5a00b6a36822a8be646d800c1486b709984ffd0e45d56b5",
+        "expected": {
+          "chapters": 10,
+          "figures": 28,
+          "images": 28,
+          "callouts": 6,
+          "tables": 0,
+          "math": 21,
+          "time_tokens": 56
+        },
+        "resources": {
+          "figures/fig_01_klotski_intro.jpg": "6eb01600aca6ca60666d40c6d2bc97596c8cd2a08c792e3491509b69b56e1f12",
+          "figures/fig_02_nodes_and_edges.jpg": "534b5a8f3e5d1f06d764548cca8c11c372b287aa3262e04d5fbec6eba9b342ae",
+          "figures/fig_03_one_block_line.jpg": "ea64f4c9a9b270d91e7dad6bf81c338d43cf90aeafb1e8e177d83e73589ba3c7",
+          "figures/fig_04_two_block_grid.jpg": "fdc122f9848332aac4ade565ece2446d2386acefb1e403f7f045dd4f3fce24e6",
+          "figures/fig_05_three_block_lattice.jpg": "9fb281c55791730dd7c751541a4132e0479f112730002edc1fef504e2b1953e5",
+          "figures/fig_06_four_dof_hypercube.jpg": "dbf383a5f2f5f86a998cabe99199be4cb0d02dbdc741b79b511e9e9057fc48ca",
+          "figures/fig_07_opposing_invalid.jpg": "402d8d5c66d46376a6491ed09b79ab409f7eae8b7a374f5e43c06908ac006fc7",
+          "figures/fig_08_same_lane_triangle.jpg": "cb94f05254632b2a3d1f34c99865efd7d1808c6d2979beeb26f2d40eab38cacb",
+          "figures/fig_09_imaginary_counterpart.jpg": "6285aab9ccbe24e1ed18d732c4d25aceb031bda6efcfb27262e9eae528f552e9",
+          "figures/fig_10_local_superstructure.jpg": "6db238197840d773e576e984d5202c9131f032a655eabe23a34d4c4947566385",
+          "figures/fig_11_local_manifold.jpg": "fea419807c7d872fd9d71c2d90d5c5a951fc4be11c252a31f605996937e377c2",
+          "figures/fig_12_redbar_puzzle.jpg": "87d29e62efd2ac55e4f0d640ca63600a1ee6f232540d78c5327cc5b88db50966",
+          "figures/fig_13_latch_left_right.jpg": "af72ace895a079299a2cd2037b07054d938c33b83b6166a6b94d507da65c7fde",
+          "figures/fig_14_square_four_corners.jpg": "ac5ac7d10f9df9b34cc6d3dbff63c7004fa635d4a2ecfe6c3477b187c23ffd5c",
+          "figures/fig_15_solutions_corners.jpg": "59081b05cfbc08aa173a50325106f2d707f45fd413ea4d62143695cf46b6ccc8",
+          "figures/fig_16_klotski_goal.jpg": "7926ae0e9a20d7fe0af68a509429db7eee79b235dd19fc57389faff04e284a03",
+          "figures/fig_17_nodes_25955.jpg": "4110ab7a8a13425bfc9860a4b0816bbf1336c0f010feaf799d50ec6ab9869a32",
+          "figures/fig_18_mirror_symmetry.jpg": "bf5cd1809e26dd61ec14fb6dc9784918323dc4d7af14981c1a05cff698a4376d",
+          "figures/fig_19_start_vs_solutions.jpg": "c106b07fad697a5cf001f129797db7d8a3b99222b53da9e8b51daf4da4d4be30",
+          "figures/fig_20_dense_pit.jpg": "16ba3459861047a1824bcebaa4562d1daa968cb5ec1b726d79c942a33a630b30",
+          "figures/fig_21_shortest_path.jpg": "d0a948d9f5a5198f7ad6318e32dc3f899a17ad7a11b41bd43696c2eccc41b720",
+          "figures/fig_22_gwr_path.jpg": "452abaf63c7901944bfd411825aa555834f2f8dac7fdd31fc81d379f82baa287",
+          "figures/fig_23_overlap_solutions.jpg": "9f3529b4dc28cbd8bec8723f80da5634158910604b35f0b746174130226fbd7b",
+          "figures/fig_24_doubly_symmetric.jpg": "d7be7fbe2401c745b6cffe5c15510decea788fc3191cf66dd7fb65d5b2d3c193",
+          "figures/fig_25_island_248.jpg": "9971ae97ec9d9e3ba0ade4842942b82dd364c9f02117deff8c3b2b26e92fdeda",
+          "figures/fig_26_blurred_shared.jpg": "c05beeac121709fbcc2dfa60bcfc450510112bb4f2b058d25bb12086de984cc6",
+          "figures/fig_27_breakout.jpg": "4cd3ef265a741f3fd6c454b79c4f01991f73a8ccc62f4c3f88d75f99e8721e5d",
+          "figures/fig_28_bio_analogy.jpg": "6a6fffab0a8e7685f99952968cf82d73d1d871d6126632dcb58efc519ae6c820"
+        }
+      }
+    }
+  ]
+}

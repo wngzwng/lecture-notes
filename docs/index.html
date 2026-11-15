@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <link rel="icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="description" content="个人中文讲义阅读站：按课程查找，在线阅读或下载 PDF。">
+  <title>Lecture Notes · 课程资料</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/bauhaus.css">
+</head>
+<body class="home-page bauhaus-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header">
+    <nav class="nav-shell" aria-label="主导航">
+      <a class="brand" href="index.html" aria-label="Lecture Notes 首页">
+        <span class="brand-mark" aria-hidden="true">L/N</span>
+        <span>lecture notes</span>
+      </a>
+      <div class="nav-links">
+        <a aria-current="page" href="index.html">课程资料</a>
+        <a href="https://github.com/wngzwng/lecture-notes">GitHub ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="hero-intro"><span aria-hidden="true"></span> 个人笔记 · 中文讲义</p>
+        <h1 id="hero-title">把一堂课，<br>变成一本书。</h1>
+        <p class="hero-lede">从视频里的讲解，到可以翻阅的中文讲义。<br>按课程查找、在线阅读或下载 PDF，让学习有迹可循。</p>
+        <div class="hero-actions">
+          <a class="hero-button" href="#library-title">浏览课程 <span aria-hidden="true">↘</span></a>
+          <a class="hero-secondary" href="https://github.com/ysyecust/lecture-to-notes">讲义由 lecture-to-notes 生成 <span aria-hidden="true">↗</span></a>
+        </div>
+        <p class="hero-formats">YouTube / Bilibili / X <span aria-hidden="true">—</span> LaTeX / PDF</p>
+      </div>
+      <figure class="hero-art">
+        <img src="assets/lecture-process.svg" width="560" height="520" alt="讲义制作流程：视频经过字幕和画面提取，编排并编译为中文讲义，再核验图文、数值和版式。核验通过后交付 PDF，未通过则返回编排环节修订。">
+      </figure>
+    </section>
+
+    <section class="catalog-ledger" aria-label="资料统计">
+      <p class="ledger-heading">把知识留在纸上。<span>按课程整理，随时回来读。</span></p>
+      <dl>
+        <div><dd id="stat-courses">—</dd><dt>门课程</dt></div>
+        <div><dd id="stat-lectures">—</dd><dt>份 PDF</dt></div>
+        <div><dd id="stat-pages">—</dd><dt>页讲义</dt></div>
+      </dl>
+    </section>
+
+    <section class="library" aria-labelledby="library-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Course library</p>
+          <h2 id="library-title">课程资料</h2>
+        </div>
+        <p>按讲次进入讲义，在线阅读或下载 PDF。</p>
+      </div>
+      <div class="search-panel">
+        <label for="course-search">搜索课程、讲次或主题</label>
+        <div class="search-field">
+          <span aria-hidden="true">⌕</span>
+          <input id="course-search" type="search" autocomplete="off" placeholder="例如 魔方、线性代数">
+          <kbd>/</kbd>
+        </div>
+        <p id="library-status" role="status" aria-live="polite"></p>
+      </div>
+      <div id="course-filters" class="course-filters" role="toolbar" aria-label="课程分类筛选">
+        <button type="button" class="filter-chip active" data-filter="all" aria-pressed="true">全部课程</button>
+        <button type="button" class="filter-chip" data-filter="university" aria-pressed="false">高校系统课程</button>
+        <button type="button" class="filter-chip" data-filter="collection" aria-pressed="false">专题与分享</button>
+        <button type="button" class="filter-chip" data-filter="web" aria-pressed="false">支持网页精读</button>
+      </div>
+      <section id="search-lectures" class="search-lectures" aria-label="匹配讲次" hidden></section>
+      <div id="course-grid" class="course-grid" aria-label="课程列表"></div>
+      <section id="course-detail" class="course-detail" aria-labelledby="course-detail-title" hidden></section>
+      <div id="empty-state" class="empty-state" hidden>
+        <p class="empty-code">搜索结果为空</p>
+        <h3>没有匹配内容</h3>
+        <p>试试课程名、讲次、讲师或主题关键词。</p>
+      </div>
+      <div id="catalog-error" class="empty-state error-state" hidden>
+        <p class="empty-code">目录暂时不可用</p>
+        <h3>课程目录没有加载成功</h3>
+        <p id="catalog-error-message">请检查网络后重试。</p>
+        <button id="catalog-retry" class="button button-primary" type="button">重新加载</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-brand">lecture notes <span aria-hidden="true">● ▲ ■</span></p>
+    <p>讲义版权归原作者，本站材料仅用于学习与研究。站点由 <a href="https://github.com/ysyecust/lecture-to-notes">lecture-to-notes</a> 生成，遵循 GPL-3.0 许可。</p>
+  </footer>
+  <script type="module" src="assets/home.js"></script>
+</body>
+</html>
